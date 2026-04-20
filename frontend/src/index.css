@@ -1,0 +1,14 @@
+/* index.css */
+:root {
+  --brand-dark: #7b1f0f;
+  --brand-soft: #fff8f3;
+  --muted: #8a6b63;
+  --card-bg: #fff;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: var(--brand-soft);
+  color: #333;
+}

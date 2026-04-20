@@ -1,0 +1,34 @@
+/* frontend/src/admin/admin.css */
+input, select, textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+}
+button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  background: #2d6cdf;
+  color: white;
+  cursor: pointer;
+}
+button:hover { opacity: 0.95; }
+/* frontend/src/admin/admin.css */
+.stat-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  width: 180px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+.stat-number {
+  font-size: 28px;
+  font-weight: 800;
+  color: #6b2f25;
+}
+.stat-label {
+  color: #666;
+  margin-top: 6px;
+}

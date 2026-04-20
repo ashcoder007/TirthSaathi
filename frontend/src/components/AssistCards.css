@@ -1,0 +1,42 @@
+/* AssistCards.css */
+.assist-section {
+  padding: 28px 0 60px;
+}
+
+.assist-title {
+  color: var(--brand-dark);
+  margin-bottom: 18px;
+  font-weight:700;
+}
+
+.assist-card {
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+  min-height: 120px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.assist-icon {
+  width:40px;
+  height:40px;
+  margin-bottom:8px;
+}
+
+.assist-text {
+  margin-top:8px;
+  color: #7a4a42;
+  font-size: 14px;
+  font-weight:600;
+}
+.clickable-card {
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.clickable-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}

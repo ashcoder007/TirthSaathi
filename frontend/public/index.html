@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Web site created using create-react-app" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title>React App</title>
+
+    <script>
+      // Make callback global + log if it runs
+      window.googleTranslateElementInit = function () {
+        console.log("✅ googleTranslateElementInit called");
+
+        if (!window.google || !window.google.translate) {
+          console.error("❌ google.translate not available");
+          return;
+        }
+
+        new window.google.translate.TranslateElement(
+          {
+            pageLanguage: "en",
+            includedLanguages: "en,hi,ta,te,kn,ml,gu,mr,bn,pa,or",
+            autoDisplay: false,
+          },
+          "google_translate_element"
+        );
+
+        console.log("✅ TranslateElement created");
+      };
+    </script>
+
+    <script
+      src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+      async
+    ></script>
+  </head>
+
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <!-- IMPORTANT: keep it visible for testing -->
+    <div
+  id="google_translate_element"
+  style="position: absolute; left: -9999px; top: 0;"
+></div>
+
+    <div id="root"></div>
+  </body>
+</html>

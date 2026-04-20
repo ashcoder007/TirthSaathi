@@ -1,0 +1,40 @@
+/* HeroCarousel.css */
+.hero-section {
+  padding: 40px 0 48px;
+  text-align: center;
+}
+
+.brand-title {
+  font-family: "Georgia", serif;
+  color: var(--brand-dark);
+  font-size: 48px;
+  margin: 8px 0;
+  font-weight: 700;
+}
+
+.brand-sub {
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.hero-img {
+  border-radius: 12px;
+  height: 340px;
+  object-fit: cover;
+}
+
+/* caption */
+.carousel-caption {
+  background: rgba(255,255,255,0.9);
+  color: var(--brand-dark);
+  display:inline-block;
+  padding:8px 12px;
+  border-radius:8px;
+  bottom: 24px !important;
+}
+
+/* responsive */
+@media (max-width: 768px) {
+  .brand-title { font-size: 32px; }
+  .hero-img { height: 200px; }
+}

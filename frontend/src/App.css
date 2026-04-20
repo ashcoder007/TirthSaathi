@@ -1,0 +1,37 @@
+/* App.css */
+
+/* App container */
+.App {
+  min-height: 100vh;
+  background-color: #fff8f3;
+  color: #3a2a20;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Simple container for consistent padding */
+.container-narrow {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5 {
+  color: #7b1f0f;
+  font-weight: 700;
+}
+
+/* Buttons (for Login / SignUp, etc.) */
+button, .btn {
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* Footer */
+footer {
+  background: transparent;
+  text-align: center;
+  color: #8a6b63;
+  font-size: 14px;
+  padding: 20px 0;
+}

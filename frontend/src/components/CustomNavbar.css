@@ -1,0 +1,22 @@
+/* CustomNavbar.css */
+.custom-navbar {
+  background: transparent;
+  padding: 12px 0;
+}
+
+.brand {
+  display:flex;
+  align-items:center;
+}
+
+.brand-logo {
+  width:44px;
+  height:44px;
+  margin-right:10px;
+}
+
+.brand-text {
+  color: var(--brand-dark);
+  font-weight:700;
+  font-size:20px;
+}

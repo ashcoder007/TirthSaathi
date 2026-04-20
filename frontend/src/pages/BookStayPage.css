@@ -1,0 +1,32 @@
+.bookstay-carousel-wrap {
+  max-width: 1100px;          /* same feel as home hero */
+  margin: 24px auto 36px;     /* center it */
+  border-radius: 18px;
+  overflow: hidden;           /* makes rounded corners work */
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
+}
+
+.bookstay-carousel-img {
+  width: 100%;
+  height: 420px;              /* 👈 controls height */
+  object-fit: cover;          /* hero-style crop */
+}
+
+/* arrows spacing */
+#bookStayCarousel .carousel-control-prev,
+#bookStayCarousel .carousel-control-next {
+  width: 7%;
+}
+
+/* arrow visibility */
+#bookStayCarousel .carousel-control-prev-icon,
+#bookStayCarousel .carousel-control-next-icon {
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.7));
+}
+
+/* indicator dots */
+#bookStayCarousel .carousel-indicators [data-bs-target] {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
