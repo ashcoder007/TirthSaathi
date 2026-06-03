@@ -11,63 +11,91 @@ import {
 
 mapboxgl.accessToken = MAPBOX_TOKEN;
 
-const UJJAIN_BBOX = "75.70,23.10,75.86,23.25";
-
-const UJJAIN_LANDMARKS = [
-  {
-    label: "Ram Ghat, Ujjain",
-    coords: [75.7741, 23.185],
-    aliases: ["ram ghat", "ramghat", "shipra ghat", "kshipra ghat"]
-  },
-  {
-    label: "Shri Mahakaleshwar Mandir, Ujjain",
-    coords: [75.7689, 23.1828],
-    aliases: [
-      "mahakaleshwar mandir",
-      "mahakaleshwar temple",
-      "mahakal mandir",
-      "mahakal temple",
-      "mahakaleshwar jyotirlinga",
-      "mahakal"
+const PLACE_ROUTE_CONFIG = {
+  ujjain: {
+    stateHint: "Madhya Pradesh India",
+    bbox: "75.70,23.10,75.86,23.25",
+    defaultStart: "Ram Ghat",
+    defaultDest: "Mahakaleshwar Mandir",
+    landmarks: [
+      { label: "Ram Ghat, Ujjain", coords: [75.7741, 23.185], aliases: ["ram ghat", "ramghat", "shipra ghat", "kshipra ghat"] },
+      { label: "Shri Mahakaleshwar Mandir, Ujjain", coords: [75.7689, 23.1828], aliases: ["mahakaleshwar mandir", "mahakaleshwar temple", "mahakal mandir", "mahakal temple", "mahakaleshwar jyotirlinga", "mahakal"] },
+      { label: "Mahakal Lok, Ujjain", coords: [75.7706, 23.1831], aliases: ["mahakal lok", "mahakal corridor"] },
+      { label: "Harsiddhi Mata Temple, Ujjain", coords: [75.7658, 23.1818], aliases: ["harsiddhi", "harsiddhi mata", "harsiddhi temple"] },
+      { label: "Kaal Bhairav Temple, Ujjain", coords: [75.7738, 23.2109], aliases: ["kaal bhairav", "kal bhairav", "kal bherav", "kaal bhairav temple"] },
+      { label: "Mangalnath Temple, Ujjain", coords: [75.7758, 23.2204], aliases: ["mangalnath", "mangalnath temple"] },
+      { label: "Gopal Mandir, Ujjain", coords: [75.7758, 23.1833], aliases: ["gopal mandir", "dwarkadhish temple"] },
+      { label: "Chintaman Ganesh Temple, Ujjain", coords: [75.7242, 23.1758], aliases: ["chintaman ganesh", "chintaman ganesh temple"] }
     ]
   },
-  {
-    label: "Mahakal Lok, Ujjain",
-    coords: [75.7706, 23.1831],
-    aliases: ["mahakal lok", "mahakal corridor"]
+  varanasi: {
+    stateHint: "Uttar Pradesh India",
+    bbox: "82.90,25.24,83.08,25.39",
+    defaultStart: "Dashashwamedh Ghat",
+    defaultDest: "Kashi Vishwanath Temple",
+    landmarks: [
+      { label: "Dashashwamedh Ghat, Varanasi", coords: [83.0104, 25.3069], aliases: ["dashashwamedh ghat", "dasaswamedh ghat", "ganga aarti", "ganga aarti varanasi"] },
+      { label: "Kashi Vishwanath Temple, Varanasi", coords: [83.0107, 25.3109], aliases: ["kashi vishwanath", "kashi vishwanath temple", "vishwanath temple"] },
+      { label: "Assi Ghat, Varanasi", coords: [83.0024, 25.2887], aliases: ["assi ghat", "asi ghat"] },
+      { label: "Manikarnika Ghat, Varanasi", coords: [83.0145, 25.3101], aliases: ["manikarnika ghat"] },
+      { label: "Sankat Mochan Hanuman Temple, Varanasi", coords: [82.9997, 25.282], aliases: ["sankat mochan", "sankat mochan temple", "hanuman temple varanasi"] },
+      { label: "Sarnath, Varanasi", coords: [83.022, 25.3716], aliases: ["sarnath", "dhamek stupa"] }
+    ]
   },
-  {
-    label: "Harsiddhi Mata Temple, Ujjain",
-    coords: [75.7658, 23.1818],
-    aliases: ["harsiddhi", "harsiddhi mata", "harsiddhi temple"]
+  haridwar: {
+    stateHint: "Uttarakhand India",
+    bbox: "77.98,29.88,78.25,30.05",
+    defaultStart: "Har Ki Pauri",
+    defaultDest: "Mansa Devi Temple",
+    landmarks: [
+      { label: "Har Ki Pauri, Haridwar", coords: [78.1711, 29.956], aliases: ["har ki pauri", "harki pauri", "haridwar ghat", "ganga aarti haridwar"] },
+      { label: "Mansa Devi Temple, Haridwar", coords: [78.1636, 29.9579], aliases: ["mansa devi", "mansa devi temple"] },
+      { label: "Chandi Devi Temple, Haridwar", coords: [78.1857, 29.9346], aliases: ["chandi devi", "chandi devi temple"] },
+      { label: "Daksheshwar Mahadev Temple, Haridwar", coords: [78.1599, 29.9287], aliases: ["daksh mahadev", "daksheshwar mahadev", "daksha mahadev temple"] },
+      { label: "Bharat Mata Mandir, Haridwar", coords: [78.1442, 29.9872], aliases: ["bharat mata mandir", "bharat mata temple"] }
+    ]
   },
-  {
-    label: "Kaal Bhairav Temple, Ujjain",
-    coords: [75.7738, 23.2109],
-    aliases: ["kaal bhairav", "kal bhairav", "kal bherav", "kaal bhairav temple"]
-  },
-  {
-    label: "Mangalnath Temple, Ujjain",
-    coords: [75.7758, 23.2204],
-    aliases: ["mangalnath", "mangalnath temple"]
-  },
-  {
-    label: "Gopal Mandir, Ujjain",
-    coords: [75.7758, 23.1833],
-    aliases: ["gopal mandir", "dwarkadhish temple"]
-  },
-  {
-    label: "Chintaman Ganesh Temple, Ujjain",
-    coords: [75.7242, 23.1758],
-    aliases: ["chintaman ganesh", "chintaman ganesh temple"]
+  rishikesh: {
+    stateHint: "Uttarakhand India",
+    bbox: "78.24,30.05,78.40,30.17",
+    defaultStart: "Triveni Ghat",
+    defaultDest: "Parmarth Niketan",
+    landmarks: [
+      { label: "Triveni Ghat, Rishikesh", coords: [78.2922, 30.1039], aliases: ["triveni ghat", "triveni ghat rishikesh", "ganga aarti rishikesh"] },
+      { label: "Parmarth Niketan, Rishikesh", coords: [78.3116, 30.121], aliases: ["parmarth niketan", "parmarth ashram"] },
+      { label: "Ram Jhula, Rishikesh", coords: [78.3104, 30.119], aliases: ["ram jhula", "ramjhula"] },
+      { label: "Lakshman Jhula, Rishikesh", coords: [78.3307, 30.1263], aliases: ["lakshman jhula", "laxman jhula", "lakshmanjhula"] },
+      { label: "Neelkanth Mahadev Temple, Rishikesh", coords: [78.3445, 30.0799], aliases: ["neelkanth mahadev", "neelkanth temple"] },
+      { label: "Bharat Mandir, Rishikesh", coords: [78.2925, 30.1077], aliases: ["bharat mandir", "bharat temple"] }
+    ]
   }
-];
+};
 
 const normalizeSearchText = (value) =>
   String(value || "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, " ")
     .trim();
+
+const getRouteConfigForPlace = (placeName) => {
+  const normalized = normalizeSearchText(placeName || "ujjain");
+  return (
+    Object.entries(PLACE_ROUTE_CONFIG).find(([key]) => normalized.includes(key))?.[1] ||
+    PLACE_ROUTE_CONFIG.ujjain
+  );
+};
+
+const buildBboxFromCoords = (coords) => {
+  if (!coords?.lng || !coords?.lat) return "";
+  const lngDelta = 0.08;
+  const latDelta = 0.08;
+  return [
+    (coords.lng - lngDelta).toFixed(4),
+    (coords.lat - latDelta).toFixed(4),
+    (coords.lng + lngDelta).toFixed(4),
+    (coords.lat + latDelta).toFixed(4)
+  ].join(",");
+};
 
 const buttonStyle = {
   padding: "10px 16px",
@@ -105,6 +133,11 @@ export default function MapsPage() {
   const selectedPlace = useMemo(
     () => places.find((p) => p._id === selectedPlaceId),
     [places, selectedPlaceId]
+  );
+
+  const selectedRouteConfig = useMemo(
+    () => getRouteConfigForPlace(selectedPlace?.name),
+    [selectedPlace]
   );
 
   const startPlace = useMemo(
@@ -157,10 +190,16 @@ export default function MapsPage() {
 
     setRouteInfo(null);
     setError("");
+    setStartMode("custom");
+    setDestMode("custom");
+    setStartId("");
+    setDestId("");
+    setStartText(selectedRouteConfig.defaultStart);
+    setDestText(selectedRouteConfig.defaultDest);
 
     const { lng, lat } = selectedPlace.coords;
     map.flyTo({ center: [lng, lat], zoom: 13 });
-  }, [selectedPlace]);
+  }, [selectedPlace, selectedRouteConfig]);
 
   const clearMarkersAndRoute = () => {
     const map = mapRef.current;
@@ -197,11 +236,12 @@ export default function MapsPage() {
     const placeHint = selectedPlace?.name || "Ujjain";
     const escapedPlaceHint = placeHint.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const hasPlaceHint = new RegExp(escapedPlaceHint, "i").test(text);
-    const hasIndiaHint = /india|madhya pradesh|mp/i.test(text);
+    const stateHint = selectedRouteConfig.stateHint || "India";
+    const hasIndiaHint = /india|madhya pradesh|uttarakhand|uttar pradesh|mp|up/i.test(text);
     return [
       text,
       hasPlaceHint ? "" : placeHint,
-      hasIndiaHint ? "" : "Madhya Pradesh India"
+      hasIndiaHint ? "" : stateHint
     ]
       .filter(Boolean)
       .join(", ");
@@ -211,7 +251,7 @@ export default function MapsPage() {
     const normalized = normalizeSearchText(text);
     if (!normalized) return null;
 
-    const match = UJJAIN_LANDMARKS.find((landmark) =>
+    const match = (selectedRouteConfig.landmarks || []).find((landmark) =>
       landmark.aliases.some((alias) => {
         const normalizedAlias = normalizeSearchText(alias);
         return normalized === normalizedAlias || normalized.includes(normalizedAlias);
@@ -235,15 +275,19 @@ export default function MapsPage() {
 
     let score = 0;
     if (normalizedPlace.includes(normalizedQuery)) score += 6;
-    if (normalizedPlace.includes("ujjain")) score += 4;
-    if (normalizedPlace.includes("madhya pradesh")) score += 2;
+    const selectedName = normalizeSearchText(selectedPlace?.name || "ujjain");
+    const stateHint = normalizeSearchText(selectedRouteConfig.stateHint || "india");
+    if (selectedName && normalizedPlace.includes(selectedName)) score += 4;
+    stateHint.split(" ").forEach((part) => {
+      if (part.length > 2 && normalizedPlace.includes(part)) score += 1;
+    });
     if (normalizedPlace.includes("india")) score += 1;
-    if (/ram\s*ghat|ramghat/.test(normalizedQuery) && /ram\s*ghat|ramghat/.test(normalizedPlace)) {
-      score += 8;
-    }
-    if (/mahakal|mahakaleshwar/.test(normalizedQuery) && /mahakal|mahakaleshwar/.test(normalizedPlace)) {
-      score += 8;
-    }
+    (selectedRouteConfig.landmarks || []).forEach((landmark) => {
+      landmark.aliases.forEach((alias) => {
+        const normalizedAlias = normalizeSearchText(alias);
+        if (normalizedQuery.includes(normalizedAlias) && normalizedPlace.includes(normalizedAlias)) score += 8;
+      });
+    });
 
     const relevance = typeof feature.relevance === "number" ? feature.relevance : 0;
     return score + relevance;
@@ -260,10 +304,12 @@ export default function MapsPage() {
       selectedPlace?.coords?.lng && selectedPlace?.coords?.lat
         ? `&proximity=${selectedPlace.coords.lng},${selectedPlace.coords.lat}`
         : "&proximity=75.7866,23.1765";
+    const bbox = selectedRouteConfig.bbox || buildBboxFromCoords(selectedPlace?.coords);
+    const bboxParam = bbox ? `&bbox=${bbox}` : "";
 
     const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
       buildSearchQuery(q)
-    )}.json?limit=5&country=in&bbox=${UJJAIN_BBOX}${proximity}&access_token=${mapboxgl.accessToken}`;
+    )}.json?limit=5&country=in${bboxParam}${proximity}&access_token=${mapboxgl.accessToken}`;
 
     const res = await fetch(url);
     const data = await res.json();
@@ -271,7 +317,13 @@ export default function MapsPage() {
     const best = features
       .filter((feature) => {
         const placeName = normalizeSearchText(feature.place_name || "");
-        return placeName.includes("ujjain") || placeName.includes("madhya pradesh");
+        const selectedName = normalizeSearchText(selectedPlace?.name || "");
+        const stateHint = normalizeSearchText(selectedRouteConfig.stateHint || "");
+        return (
+          !selectedName ||
+          placeName.includes(selectedName) ||
+          stateHint.split(" ").some((part) => part.length > 2 && placeName.includes(part))
+        );
       })
       .sort((a, b) => scoreGeocodeFeature(b, q) - scoreGeocodeFeature(a, q))[0] || features[0];
 
@@ -466,6 +518,13 @@ export default function MapsPage() {
           pointerEvents: optionsEnabled ? "auto" : "none"
         }}
       >
+        <datalist id="route-landmarks">
+          {(selectedRouteConfig.landmarks || []).map((landmark) => (
+            <option key={landmark.label} value={landmark.aliases[0]}>
+              {landmark.label}
+            </option>
+          ))}
+        </datalist>
         <div
           style={{
             display: "grid",
@@ -497,7 +556,8 @@ export default function MapsPage() {
               <input
                 value={startText}
                 onChange={(e) => setStartText(e.target.value)}
-                placeholder="Ram Ghat"
+                list="route-landmarks"
+                placeholder={selectedRouteConfig.defaultStart}
                 style={{ width: "100%", padding: 10, borderRadius: 8, border: "1px solid #ddd" }}
               />
             )}
@@ -526,7 +586,8 @@ export default function MapsPage() {
               <input
                 value={destText}
                 onChange={(e) => setDestText(e.target.value)}
-                placeholder="Mahakaleshwar Mandir"
+                list="route-landmarks"
+                placeholder={selectedRouteConfig.defaultDest}
                 style={{ width: "100%", padding: 10, borderRadius: 8, border: "1px solid #ddd" }}
               />
             )}

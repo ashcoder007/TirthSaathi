@@ -44,8 +44,9 @@ export default function AIGuideChat() {
       // remove waiting message
       setMessages(prev => prev.filter(m => m.id !== waitingId));
 
-      // If HF answer present prefer it
-      if (data.hf && data.hf.answer) {
+      if (data.answer) {
+        pushMessage({ who: 'bot', text: data.answer });
+      } else if (data.hf && data.hf.answer) {
         pushMessage({ who: 'bot', text: data.hf.answer });
       } else if (Array.isArray(data.results) && data.results.length) {
         // older route naming (results)

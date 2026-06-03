@@ -1,14 +1,9 @@
 // src/App.js
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 // User pages
 import Home from './pages/home';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import VerifyEmail from './pages/VerifyEmail';
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
 import TripPlanner from './pages/TripPlanner';
 import EmergencyPage from "./pages/EmergencyPage";  
 import AIGuideChat from './pages/AIGuideChat';
@@ -32,11 +27,11 @@ function App() {
       <Routes>
         {/* ----------------- USER SIDE ----------------- */}
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/verify-email" element={<VerifyEmail />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/login" element={<Navigate to="/" replace />} />
+        <Route path="/signup" element={<Navigate to="/" replace />} />
+        <Route path="/verify-email" element={<Navigate to="/" replace />} />
+        <Route path="/forgot-password" element={<Navigate to="/" replace />} />
+        <Route path="/reset-password" element={<Navigate to="/" replace />} />
         <Route path="/trip-planner" element={<TripPlanner />} />
         <Route path="/ai-guide-chat" element={<AIGuideChat />} />
         <Route path="/emergencyPage" element={<EmergencyPage />} />
