@@ -71,6 +71,8 @@ export default function TripPlanner() {
 
     loadEventsForPlace(form.placeId);
     loadAccommodationsForPlace(form.placeId);
+    // These helpers are local function declarations; keeping this effect keyed to place data avoids repeated refetch loops.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.placeId, places]);
 
   /* -------------------- MAP INIT (ONCE) -------------------- */
@@ -82,15 +84,15 @@ export default function TripPlanner() {
     mapRef.current = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: "mapbox://styles/mapbox/streets-v11",
-      center: [viewport.longitude, viewport.latitude],
-      zoom: viewport.zoom
+      center: [75.7847, 23.18],
+      zoom: 10
     });
 
     return () => {
       mapRef.current?.remove();
       mapRef.current = null;
     };
-  }, [MAPBOX_TOKEN]);
+  }, []);
 
   /* -------------------- UPDATE MAP -------------------- */
   useEffect(() => {

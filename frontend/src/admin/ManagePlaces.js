@@ -1,5 +1,5 @@
 // frontend/src/admin/ManagePlaces.js
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import './admin.css';
 import { API_ORIGIN } from '../config';
@@ -19,11 +19,7 @@ export default function ManagePlaces() {
 
   const token = localStorage.getItem('admin_token') || localStorage.getItem('ts_token');
 
-  useEffect(() => {
-    loadPlaces();
-  }, []);
-
-  async function loadPlaces() {
+  const loadPlaces = useCallback(async () => {
     try {
       setLoading(true);
       if (!token) {
@@ -38,7 +34,11 @@ export default function ManagePlaces() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [token]);
+
+  useEffect(() => {
+    loadPlaces();
+  }, [loadPlaces]);
 
   function resetForm() {
     setForm({ _id: null, code: '', name: '', description: '', coordsLat: '', coordsLng: '', languages: '' });

@@ -1,5 +1,5 @@
 // frontend/src/admin/ManageEvents.js
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import './admin.css';
 import { API_ORIGIN } from '../config';
@@ -28,12 +28,7 @@ export default function ManageEvents() {
 
   const token = localStorage.getItem('admin_token') || localStorage.getItem('ts_token');
 
-  useEffect(() => {
-    loadPlaces();
-    loadEvents();
-  }, []);
-
-  async function loadPlaces() {
+  const loadPlaces = useCallback(async () => {
     console.log('using token:', token);
     try {
       const res = await axios.get(`${API_ORIGIN}/api/admin/places`, { headers: { Authorization: `Bearer ${token}` } });
@@ -42,9 +37,9 @@ export default function ManageEvents() {
       console.error(err);
       alert('Failed to load places');
     }
-  }
+  }, [token]);
 
-  async function loadEvents() {
+  const loadEvents = useCallback(async () => {
     setLoading(true);
     try {
       const res = await axios.get(`${API_ORIGIN}/api/admin/events`, { headers: { Authorization: `Bearer ${token}` } });
@@ -55,7 +50,12 @@ export default function ManageEvents() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [token]);
+
+  useEffect(() => {
+    loadPlaces();
+    loadEvents();
+  }, [loadPlaces, loadEvents]);
 
   function resetForm() {
     setForm({

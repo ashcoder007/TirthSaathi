@@ -1,5 +1,5 @@
 // frontend/src/admin/AdminDashboard.js
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -19,18 +19,9 @@ export default function AdminDashboard() {
   const [monthlyVisits, setMonthlyVisits] = useState([]);
 
   // ------------------------------------
-  // Load data when page opens
-  // ------------------------------------
-  useEffect(() => {
-    loadCounts();
-    loadEventsByPlace();
-    loadMonthlyVisits();   // sample data for now
-  }, []);
-
-  // ------------------------------------
   // Total counts: users / places / events
   // ------------------------------------
-  async function loadCounts() {
+  const loadCounts = useCallback(async () => {
     try {
       const [u, p, e] = await Promise.all([
         axios.get(`${API_ORIGIN}/api/admin/users`, { headers: { Authorization: `Bearer ${token}` } }),
@@ -47,12 +38,12 @@ export default function AdminDashboard() {
       console.error(err);
       alert("Failed to load dashboard counts");
     }
-  }
+  }, [token]);
 
   // ------------------------------------
   // Events per place (bar chart)
   // ------------------------------------
-  async function loadEventsByPlace() {
+  const loadEventsByPlace = useCallback(async () => {
     try {
       const res = await axios.get(`${API_ORIGIN}/api/admin/events`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -75,12 +66,12 @@ export default function AdminDashboard() {
     } catch (err) {
       console.error(err);
     }
-  }
+  }, [token]);
 
   // ------------------------------------
   // Fake monthly visits (until backend adds real analytics)
   // ------------------------------------
-  function loadMonthlyVisits() {
+  const loadMonthlyVisits = useCallback(() => {
     const sample = [
       { month: "Jan", visits: 120 },
       { month: "Feb", visits: 210 },
@@ -96,7 +87,16 @@ export default function AdminDashboard() {
       { month: "Dec", visits: 500 }
     ];
     setMonthlyVisits(sample);
-  }
+  }, []);
+
+  // ------------------------------------
+  // Load data when page opens
+  // ------------------------------------
+  useEffect(() => {
+    loadCounts();
+    loadEventsByPlace();
+    loadMonthlyVisits();   // sample data for now
+  }, [loadCounts, loadEventsByPlace, loadMonthlyVisits]);
 
   // ------------------------------------
   // UI Rendering
