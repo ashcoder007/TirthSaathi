@@ -2,8 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './admin.css';
-
-const API = process.env.REACT_APP_API || 'http://localhost:5000';
+import { API_ORIGIN } from '../config';
 
 function prettyDate(d) {
   if (!d) return '';
@@ -37,7 +36,7 @@ export default function ManageEvents() {
   async function loadPlaces() {
     console.log('using token:', token);
     try {
-      const res = await axios.get(`${API}/api/admin/places`, { headers: { Authorization: `Bearer ${token}` } });
+      const res = await axios.get(`${API_ORIGIN}/api/admin/places`, { headers: { Authorization: `Bearer ${token}` } });
       setPlaces(res.data);
     } catch (err) {
       console.error(err);
@@ -48,7 +47,7 @@ export default function ManageEvents() {
   async function loadEvents() {
     setLoading(true);
     try {
-      const res = await axios.get(`${API}/api/admin/events`, { headers: { Authorization: `Bearer ${token}` } });
+      const res = await axios.get(`${API_ORIGIN}/api/admin/events`, { headers: { Authorization: `Bearer ${token}` } });
       setEvents(res.data);
     } catch (err) {
       console.error(err);
@@ -110,13 +109,13 @@ export default function ManageEvents() {
 
       if (form._id) {
         // update
-        await axios.put(`${API}/api/admin/events/${form._id}`, fd, {
+        await axios.put(`${API_ORIGIN}/api/admin/events/${form._id}`, fd, {
           headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }
         });
         alert('Event updated');
       } else {
         // create
-        await axios.post(`${API}/api/admin/events`, fd, {
+        await axios.post(`${API_ORIGIN}/api/admin/events`, fd, {
           headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }
         });
         alert('Event created');
@@ -133,7 +132,7 @@ export default function ManageEvents() {
   async function handleDelete(id) {
     if (!window.confirm('Delete this event?')) return;
     try {
-      await axios.delete(`${API}/api/admin/events/${id}`, {
+      await axios.delete(`${API_ORIGIN}/api/admin/events/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       loadEvents();

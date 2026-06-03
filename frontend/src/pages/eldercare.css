@@ -1,0 +1,193 @@
+.elder-care-page {
+  min-height: 100vh;
+  padding: 22px;
+  background: #fff8f2;
+  color: #302723;
+}
+
+.elder-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  max-width: 1180px;
+  margin: 0 auto 18px;
+}
+
+.elder-header h1 {
+  margin: 0 0 6px;
+  color: #6b2f25;
+}
+
+.elder-header p {
+  margin: 0;
+  color: #63554f;
+  max-width: 680px;
+}
+
+.elder-actions,
+.elder-button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.elder-call,
+.elder-primary,
+.elder-secondary {
+  border: 1px solid #6b2f25;
+  border-radius: 8px;
+  padding: 10px 14px;
+  text-decoration: none;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.elder-call,
+.elder-primary {
+  background: #6b2f25;
+  color: #fff;
+}
+
+.elder-call.secondary,
+.elder-secondary {
+  background: #fff;
+  color: #6b2f25;
+}
+
+.elder-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.7fr);
+  gap: 16px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.elder-panel {
+  background: #fff;
+  border: 1px solid #eaded8;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 8px 18px rgba(67, 42, 31, 0.06);
+}
+
+.elder-panel h2 {
+  margin: 0 0 12px;
+  color: #6b2f25;
+  font-size: 20px;
+}
+
+.elder-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.elder-form-grid label,
+.full-field {
+  display: grid;
+  gap: 6px;
+  color: #4b3c36;
+  font-weight: 700;
+}
+
+.elder-form-grid input,
+.elder-form-grid select,
+.full-field textarea {
+  width: 100%;
+  border: 1px solid #dccfc8;
+  border-radius: 8px;
+  padding: 10px;
+  color: #2f2926;
+  background: #fff;
+}
+
+.full-field {
+  margin-top: 12px;
+}
+
+.full-field textarea {
+  min-height: 76px;
+  resize: vertical;
+}
+
+.elder-plan ul {
+  padding-left: 20px;
+  margin: 0 0 14px;
+}
+
+.elder-plan li {
+  margin-bottom: 8px;
+}
+
+.quick-grid,
+.checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.quick-grid div {
+  border: 1px solid #eaded8;
+  border-radius: 8px;
+  padding: 10px;
+  background: #fffaf6;
+}
+
+.quick-grid strong,
+.quick-grid span {
+  display: block;
+}
+
+.quick-grid span {
+  color: #6a5b55;
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #eaded8;
+  border-radius: 8px;
+  padding: 10px;
+  background: #fffaf6;
+}
+
+.elder-button-row {
+  margin-top: 14px;
+}
+
+.elder-saved {
+  margin: 10px 0 0;
+  color: #1f7a41;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .elder-header,
+  .elder-grid {
+    display: block;
+  }
+
+  .elder-actions {
+    margin-top: 14px;
+  }
+
+  .elder-panel {
+    margin-bottom: 14px;
+  }
+}
+
+@media (max-width: 620px) {
+  .elder-care-page {
+    padding: 14px;
+  }
+
+  .elder-form-grid,
+  .quick-grid,
+  .checklist-grid {
+    grid-template-columns: 1fr;
+  }
+}

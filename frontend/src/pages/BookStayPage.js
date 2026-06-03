@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Carousel, Button, Card, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./BookStayPage.css";
-
-const API_BASE = process.env.REACT_APP_API_BASE_URL || "";
+import { API_BASE_URL, publicAsset } from "../config";
 
 function BookStayPage() {
   const [places, setPlaces] = useState([]);
@@ -16,7 +15,7 @@ function BookStayPage() {
   useEffect(() => {
     async function loadPlaces() {
       try {
-        const res = await fetch(API_BASE + "/api/places");
+        const res = await fetch(`${API_BASE_URL}/places`);
         const data = await res.json();
         setPlaces(data);
       } catch (err) {
@@ -35,9 +34,7 @@ function BookStayPage() {
 
     async function loadStays() {
       try {
-        const res = await fetch(
-          API_BASE + "/api/accommodations?placeId=" + selectedPlaceId
-        );
+        const res = await fetch(`${API_BASE_URL}/accommodations?placeId=${selectedPlaceId}`);
         const data = await res.json();
         setStays(data);
       } catch (err) {
@@ -105,7 +102,7 @@ React.createElement(
       null,
       React.createElement("img", {
         className: "bookstay-carousel-img",
-        src: "/assests/stay1.png",
+        src: publicAsset("/assests/stay1.png"),
         alt: "Slide 1"
       })
     ),
@@ -115,7 +112,7 @@ React.createElement(
       null,
       React.createElement("img", {
         className: "bookstay-carousel-img",
-        src: "/assests/stay2.png",
+        src: publicAsset("/assests/stay2.png"),
         alt: "Slide 2"
       })
     ),
@@ -125,7 +122,7 @@ React.createElement(
       null,
       React.createElement("img", {
         className: "bookstay-carousel-img",
-        src: "/assests/stay3.png",
+        src: publicAsset("/assests/stay3.png"),
         alt: "Slide 3"
       })
     ),
@@ -135,7 +132,7 @@ React.createElement(
       null,
       React.createElement("img", {
         className: "bookstay-carousel-img",
-        src: "/assests/stay4.png",
+        src: publicAsset("/assests/stay4.png"),
         alt: "Slide 4"
       })
     )
@@ -176,7 +173,7 @@ React.createElement(
               variant: "top",
               src: stay.images && stay.images[0]
                 ? stay.images[0]
-                : "/assests/stay1.png",
+                : publicAsset("/assests/stay1.png"),
             }),
             React.createElement(
               Card.Body,

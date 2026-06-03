@@ -2,8 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './admin.css';
-
-const API = process.env.REACT_APP_API || 'http://localhost:5000';
+import { API_ORIGIN } from '../config';
 
 export default function ManageAccommodations() {
   const [places, setPlaces] = useState([]);
@@ -36,7 +35,7 @@ export default function ManageAccommodations() {
 
   async function loadPlaces() {
     try {
-      const res = await axios.get(`${API}/api/admin/places`, { headers: { Authorization: `Bearer ${token}` }});
+      const res = await axios.get(`${API_ORIGIN}/api/admin/places`, { headers: { Authorization: `Bearer ${token}` }});
       setPlaces(res.data || []);
     } catch (err) {
       console.error('loadPlaces error', err);
@@ -47,7 +46,7 @@ export default function ManageAccommodations() {
   async function loadAccommodations() {
     setLoading(true);
     try {
-      const res = await axios.get(`${API}/api/admin/accommodations`, { headers: { Authorization: `Bearer ${token}` }});
+      const res = await axios.get(`${API_ORIGIN}/api/admin/accommodations`, { headers: { Authorization: `Bearer ${token}` }});
       setAccommodations(res.data || []);
     } catch (err) {
       console.error('loadAccommodations error', err);
@@ -101,7 +100,7 @@ export default function ManageAccommodations() {
   async function handleDelete(id) {
     if (!window.confirm('Delete this accommodation?')) return;
     try {
-      await axios.delete(`${API}/api/admin/accommodations/${id}`, {
+      await axios.delete(`${API_ORIGIN}/api/admin/accommodations/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       loadAccommodations();
@@ -128,12 +127,12 @@ export default function ManageAccommodations() {
       if (form.imageFile) fd.append('image', form.imageFile);
 
       if (form._id) {
-        await axios.put(`${API}/api/admin/accommodations/${form._id}`, fd, {
+        await axios.put(`${API_ORIGIN}/api/admin/accommodations/${form._id}`, fd, {
           headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }
         });
         alert('Accommodation updated');
       } else {
-        await axios.post(`${API}/api/admin/accommodations`, fd, {
+        await axios.post(`${API_ORIGIN}/api/admin/accommodations`, fd, {
           headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }
         });
         alert('Accommodation created');

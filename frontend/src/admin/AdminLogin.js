@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";  // <--- FIXED IMPORT
+import { API_ORIGIN } from "../config";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -10,15 +11,13 @@ const AdminLogin = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
       // IMPORTANT: ADMIN LOGIN ROUTE
-      const res = await axios.post(`${API_BASE}/api/admin/login`, {
+      const res = await axios.post(`${API_ORIGIN}/api/admin/login`, {
         email,
         password,
       });

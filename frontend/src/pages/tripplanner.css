@@ -91,6 +91,13 @@
   cursor: pointer;
 }
 
+.download-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 14px;
+}
+
 /* ================= TEXT ================= */
 .muted {
   color: #777;

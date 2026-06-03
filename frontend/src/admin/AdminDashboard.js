@@ -9,8 +9,7 @@ import {
   CartesianGrid, XAxis, YAxis,
   Tooltip, Legend, ResponsiveContainer
 } from "recharts";
-
-const API = process.env.REACT_APP_API || "http://localhost:5000";
+import { API_ORIGIN } from "../config";
 
 export default function AdminDashboard() {
   const token = localStorage.getItem("admin_token") || localStorage.getItem("ts_token");
@@ -34,9 +33,9 @@ export default function AdminDashboard() {
   async function loadCounts() {
     try {
       const [u, p, e] = await Promise.all([
-        axios.get(`${API}/api/admin/users`, { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get(`${API}/api/admin/places`, { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get(`${API}/api/admin/events`, { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get(`${API_ORIGIN}/api/admin/users`, { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get(`${API_ORIGIN}/api/admin/places`, { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get(`${API_ORIGIN}/api/admin/events`, { headers: { Authorization: `Bearer ${token}` } }),
       ]);
 
       setCounts({
@@ -55,7 +54,7 @@ export default function AdminDashboard() {
   // ------------------------------------
   async function loadEventsByPlace() {
     try {
-      const res = await axios.get(`${API}/api/admin/events`, {
+      const res = await axios.get(`${API_ORIGIN}/api/admin/events`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

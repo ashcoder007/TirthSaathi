@@ -2,8 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './admin.css';
-
-const API = process.env.REACT_APP_API || 'http://localhost:5000';
+import { API_ORIGIN } from '../config';
 
 export default function ManagePlaces() {
   const [places, setPlaces] = useState([]);
@@ -31,7 +30,7 @@ export default function ManagePlaces() {
         alert('Admin token missing. Please login as admin.');
         return;
       }
-      const res = await axios.get(`${API}/api/admin/places`, { headers: { Authorization: `Bearer ${token}` } });
+      const res = await axios.get(`${API_ORIGIN}/api/admin/places`, { headers: { Authorization: `Bearer ${token}` } });
       setPlaces(res.data || []);
     } catch (err) {
       console.error('loadPlaces error', err?.response || err.message || err);
@@ -72,10 +71,10 @@ export default function ManagePlaces() {
       };
 
       if (form._id) {
-        await axios.put(`${API}/api/admin/places/${form._id}`, payload, { headers: { Authorization: `Bearer ${token}` } });
+        await axios.put(`${API_ORIGIN}/api/admin/places/${form._id}`, payload, { headers: { Authorization: `Bearer ${token}` } });
         alert('Place updated');
       } else {
-        await axios.post(`${API}/api/admin/places`, payload, { headers: { Authorization: `Bearer ${token}` } });
+        await axios.post(`${API_ORIGIN}/api/admin/places`, payload, { headers: { Authorization: `Bearer ${token}` } });
         alert('Place created');
       }
 
@@ -90,7 +89,7 @@ export default function ManagePlaces() {
   async function handleDelete(id) {
     if (!window.confirm('Delete this place?')) return;
     try {
-      await axios.delete(`${API}/api/admin/places/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+      await axios.delete(`${API_ORIGIN}/api/admin/places/${id}`, { headers: { Authorization: `Bearer ${token}` } });
       loadPlaces();
     } catch (err) {
       console.error(err);

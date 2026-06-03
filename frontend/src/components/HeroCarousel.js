@@ -2,6 +2,7 @@
 import React from "react";
 import { Carousel } from "react-bootstrap";
 import "./HeroCarousel.css";
+import { publicAsset } from "../config";
 
 const HeroCarousel = () => {
   return (
@@ -16,7 +17,7 @@ const HeroCarousel = () => {
           <Carousel.Item>
             <img
               className="d-block w-100 hero-img"
-              src="/assests/hero/hero1.jpeg"
+              src={publicAsset("/assests/hero/hero1.jpeg")}
               alt="Explore sacred destinations"
             />
             <Carousel.Caption>
@@ -27,7 +28,7 @@ const HeroCarousel = () => {
           <Carousel.Item>
             <img
               className="d-block w-100 hero-img"
-              src="/assests/hero/hero2.jpg"
+              src={publicAsset("/assests/hero/hero2.jpg")}
               alt="Journey with peace of mind"
             />
             <Carousel.Caption>
@@ -38,7 +39,7 @@ const HeroCarousel = () => {
           <Carousel.Item>
             <img
               className="d-block w-100 hero-img"
-              src="/assests/hero/hero3.jpg"
+              src={publicAsset("/assests/hero/hero3.jpg")}
               alt="All the assistance you need"
             />
             <Carousel.Caption>

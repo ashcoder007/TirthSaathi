@@ -2,14 +2,13 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import './aiguide.css';
-
-const API = process.env.REACT_APP_API || 'http://localhost:5000';
+import { API_ORIGIN } from '../config';
 
 export default function AIGuideChat() {
   const [input, setInput] = useState('');
-  const [useHF, setUseHF] = useState(false); // toggle Hugging Face
+  const useHF = false;
   const [messages, setMessages] = useState([
-    { id: 'sys-1', who: 'bot', text: 'Hello! Ask me about temples or pilgrimage places in India. I can use Wikipedia (free) or Hugging Face (LLM).' }
+    { id: 'sys-1', who: 'bot', text: 'Hello! Ask me about temples or pilgrimage places in India, and I will help you with useful guidance and summaries.' }
   ]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -39,7 +38,7 @@ export default function AIGuideChat() {
 
     try {
       const payload = { q, useHF };
-      const res = await axios.post(`${API}/api/ai/query`, payload, { timeout: 60000 });
+      const res = await axios.post(`${API_ORIGIN}/api/ai/query`, payload, { timeout: 60000 });
       const data = res.data || {};
 
       // remove waiting message
@@ -87,12 +86,6 @@ export default function AIGuideChat() {
       <div className="ai-chat-card">
         <div className="ai-chat-header">
           <h3>AI Guide — TirthSaathi</h3>
-          <div className="ai-toggle">
-            <label>
-              <input type="checkbox" checked={useHF} onChange={e => setUseHF(e.target.checked)} />
-              Use Hugging Face (LLM)
-            </label>
-          </div>
         </div>
 
         <div className="ai-chat-body">

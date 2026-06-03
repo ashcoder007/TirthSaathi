@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-const API = process.env.REACT_APP_API || "http://localhost:5000";
+import { API_ORIGIN } from "../config";
 const EmergencyPage = () => {
   const [showTips, setShowTips] = useState(false);
   const [places, setPlaces] = useState([]);
 const [selectedPlace, setSelectedPlace] = useState("");
 useEffect(() => {
   axios
-    .get(`${API}/api/places`)
+    .get(`${API_ORIGIN}/api/places`)
     .then((res) => setPlaces(res.data || []))
     .catch((err) => {
       console.error("Failed to load places", err);

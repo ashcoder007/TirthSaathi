@@ -29,5 +29,5 @@ export const clearAuth = () => {
 export const logout = () => {
   clearAuth();
   // optional: redirect
-  window.location.href = '/';
+  window.location.href = `${process.env.PUBLIC_URL || ''}/`;
 };

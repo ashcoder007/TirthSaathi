@@ -15,6 +15,7 @@ import AIGuideChat from './pages/AIGuideChat';
 import MapsPage from "./pages/MapsPage";
 import BookStayPage from "./pages/BookStayPage";
 import StayBookingPage from "./pages/StayBookingPage";
+import ElderCarePage from "./pages/ElderCarePage";
 // Admin pages
 import AdminLogin from './admin/AdminLogin';
 import AdminDashboard from './admin/AdminDashboard';
@@ -27,7 +28,7 @@ import './App.css';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL || "/"}>
       <Routes>
         {/* ----------------- USER SIDE ----------------- */}
         <Route path="/" element={<Home />} />
@@ -42,6 +43,7 @@ function App() {
         <Route path="/maps" element={<MapsPage />} />
         <Route path="/book-stay" element={<BookStayPage />} />
         <Route path="/stay-booking" element={<StayBookingPage />} />
+        <Route path="/elder-care" element={<ElderCarePage />} />
         {/* ----------------- ADMIN SIDE ----------------- */}
         <Route path="/admin/login" element={<AdminLogin />} />
 

@@ -19,15 +19,10 @@
 
 .ai-chat-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   padding: 18px 22px;
   border-bottom: 1px solid #f0e6e4;
-}
-
-.ai-toggle label {
-  font-size: 14px;
-  color: #5a4a44;
 }
 
 .ai-chat-body {

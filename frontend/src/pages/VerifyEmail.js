@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { setAuth } from '../utils/auth';
+import { API_BASE_URL } from '../config';
 
 const VerifyEmail = () => {
   const [searchParams] = useSearchParams();
@@ -21,7 +22,7 @@ const VerifyEmail = () => {
     (async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/auth/verify-email?token=${encodeURIComponent(token)}`
+          `${API_BASE_URL}/auth/verify-email?token=${encodeURIComponent(token)}`
         );
 
         // Expect backend to return { success: true, token: <jwt>, user: {...} }

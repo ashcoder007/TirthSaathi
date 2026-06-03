@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Row, Col, Card, Button, Form } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
-
-const API_BASE = process.env.REACT_APP_API_BASE_URL || "";
+import { API_BASE_URL, publicAsset } from "../config";
 
 function StayBookingPage() {
   const navigate = useNavigate();
@@ -41,7 +40,7 @@ function StayBookingPage() {
     async function loadPlaces() {
       try {
         setError("");
-        const res = await fetch(API_BASE + "/api/places");
+        const res = await fetch(`${API_BASE_URL}/places`);
         const data = await res.json();
         setPlaces(data);
       } catch (e) {
@@ -62,7 +61,7 @@ function StayBookingPage() {
       try {
         setError("");
         setSuccessMsg("");
-        const res = await fetch(API_BASE + "/api/accommodations?placeId=" + selectedPlaceId);
+        const res = await fetch(`${API_BASE_URL}/accommodations?placeId=${selectedPlaceId}`);
         const data = await res.json();
         setStays(Array.isArray(data) ? data : []);
       } catch (e) {
@@ -170,7 +169,7 @@ function StayBookingPage() {
       null,
       stays.map(function (stay) {
         var isSelected = String(stay._id) === String(selectedStayId);
-        var img = stay.images && stay.images[0] ? stay.images[0] : "/assests/stay1.png";
+        var img = stay.images && stay.images[0] ? stay.images[0] : publicAsset("/assests/stay1.png");
 
         return React.createElement(
           Col,

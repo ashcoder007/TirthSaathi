@@ -1,13 +1,17 @@
 // frontend/src/pages/TripPlanner.js
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import axios from "axios";
 import { format, addDays, differenceInCalendarDays } from "date-fns";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./tripplanner.css";
-
-const API = process.env.REACT_APP_API || "http://localhost:5000";
-const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN || "";
+import { API_ORIGIN, MAPBOX_TOKEN } from "../config";
+import {
+  buildOfflineDocument,
+  downloadHtmlDocument,
+  htmlEscape,
+  openPrintableDocument
+} from "../utils/downloadDocument";
 
 export default function TripPlanner() {
   const token =
@@ -40,9 +44,14 @@ export default function TripPlanner() {
     zoom: 10
   });
 
+  const selectedPlace = useMemo(
+    () => places.find((p) => p._id === form.placeId),
+    [places, form.placeId]
+  );
+
   /* -------------------- LOAD PLACES -------------------- */
   useEffect(() => {
-    axios.get(`${API}/api/places`).then((res) => {
+    axios.get(`${API_ORIGIN}/api/places`).then((res) => {
       setPlaces(res.data || []);
     });
   }, []);
@@ -103,7 +112,7 @@ export default function TripPlanner() {
   /* -------------------- API HELPERS (FIXED) -------------------- */
   async function loadEventsForPlace(placeId) {
     try {
-      const res = await axios.get(`${API}/api/events?place=${placeId}`, {
+      const res = await axios.get(`${API_ORIGIN}/api/events?place=${placeId}`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {}
       });
 
@@ -119,9 +128,9 @@ export default function TripPlanner() {
     }
   }
 
- async function loadAccommodationsForPlace(placeId) {
+async function loadAccommodationsForPlace(placeId) {
   try {
-    const res = await axios.get(`${API}/api/accommodations`);
+    const res = await axios.get(`${API_ORIGIN}/api/accommodations`);
 
     console.log("SELECTED PLACE ID:", placeId);
     console.log("ALL ACCOMMODATIONS:", res.data);
@@ -195,12 +204,121 @@ export default function TripPlanner() {
     }
   });
 
-  setItinerary(Object.values(itineraryMap));
+  const plan = Object.values(itineraryMap);
+  setItinerary(plan);
+
+  const nightlyPrices = accommodations
+    .map((a) => {
+      const source = `${a.priceRange || ""} ${a.price || ""}`;
+      const matches = source.match(/\d+/g);
+      if (!matches?.length) return null;
+      return Number(matches[0]);
+    })
+    .filter((value) => Number.isFinite(value));
+
+  if (nightlyPrices.length) {
+    const lowestNightly = Math.min(...nightlyPrices);
+    const nights = Math.max(1, days - 1);
+    setBudgetEstimate(`From around Rs ${lowestNightly * nights} for ${nights} night(s), excluding food and local travel.`);
+  } else {
+    setBudgetEstimate("Carry cash for meals, offerings, local transport, and emergency needs.");
+  }
 }
+
+function buildItineraryDocument() {
+  const dayRows = itinerary
+    .map((day) => {
+      const items = day.items
+        .map((item) => `<li>${htmlEscape(item.title)}</li>`)
+        .join("");
+
+      return `
+        <tr>
+          <td>${htmlEscape(format(new Date(day.date), "eee, MMM d, yyyy"))}</td>
+          <td><ul>${items}</ul></td>
+        </tr>
+      `;
+    })
+    .join("");
+
+  const accommodationRows = accommodations.length
+    ? accommodations
+        .map(
+          (a) => `
+            <tr>
+              <td>${htmlEscape(a.name)}</td>
+              <td>${htmlEscape(a.type || "-")}</td>
+              <td>${htmlEscape(a.priceRange || "-")}</td>
+              <td>${htmlEscape([a.address, a.phone].filter(Boolean).join(" | ") || "-")}</td>
+            </tr>
+          `
+        )
+        .join("")
+    : `<tr><td colspan="4">No accommodations found for this place.</td></tr>`;
+
+  return buildOfflineDocument({
+    title: "TirthSaathi Offline Itinerary",
+    subtitle: `${selectedPlace?.name || "Selected place"} | ${form.startDate} to ${form.endDate}`,
+    sections: [
+      {
+        heading: "Trip Summary",
+        html: `
+          <table>
+            <tbody>
+              <tr><th>Place</th><td>${htmlEscape(selectedPlace?.name || "Selected place")}</td></tr>
+              <tr><th>Start Date</th><td>${htmlEscape(form.startDate)}</td></tr>
+              <tr><th>End Date</th><td>${htmlEscape(form.endDate)}</td></tr>
+              <tr><th>Budget Estimate</th><td>${htmlEscape(budgetEstimate || "N/A")}</td></tr>
+            </tbody>
+          </table>
+        `
+      },
+      {
+        heading: "Day-wise Plan",
+        html: `
+          <table>
+            <thead><tr><th>Date</th><th>Activities</th></tr></thead>
+            <tbody>${dayRows}</tbody>
+          </table>
+        `
+      },
+      {
+        heading: "Suggested Accommodations",
+        html: `
+          <table>
+            <thead><tr><th>Name</th><th>Type</th><th>Price</th><th>Contact / Address</th></tr></thead>
+            <tbody>${accommodationRows}</tbody>
+          </table>
+        `
+      },
+      {
+        heading: "Offline Travel Notes",
+        items: [
+          "Keep this itinerary downloaded before travelling through low-network areas.",
+          "Carry water, medicines, ID proof, and emergency contact details.",
+          "Confirm event timings locally because temple schedules may change during festivals.",
+          "Share this plan with your companion or family before starting the yatra."
+        ]
+      }
+    ]
+  });
+}
+
+function handleDownloadItinerary() {
+  const html = buildItineraryDocument();
+  downloadHtmlDocument("tirthsaathi-itinerary.html", html);
+}
+
+function handlePrintItinerary() {
+  const html = buildItineraryDocument();
+  const opened = openPrintableDocument(html);
+  if (!opened) alert("Please allow popups to print or save this itinerary as PDF.");
+}
+
   /* ======================== UI ======================== */
   return (
     <div className="trip-planner-page">
-      <h2>Plan Yatra — Trip Planner</h2>
+      <h2>Plan Yatra - Trip Planner</h2>
 
       <div className="planner-grid">
         {/* LEFT PANEL */}
@@ -253,8 +371,8 @@ export default function TripPlanner() {
                   />
                   <div className="ev-title">{ev.title}</div>
                   <div className="ev-meta">
-                    {ev.locationDesc || "—"} •{" "}
-                    {ev.startDate ? new Date(ev.startDate).toLocaleString() : "—"}
+                    {ev.locationDesc || "-"} |{" "}
+                    {ev.startDate ? new Date(ev.startDate).toLocaleString() : "-"}
                   </div>
                 </label>
               ))}
@@ -286,7 +404,17 @@ export default function TripPlanner() {
         <div className="planner-results card">
           <h3>Itinerary</h3>
           {itinerary.length === 0 && (
-            <div className="muted">No itinerary yet — generate one above.</div>
+            <div className="muted">No itinerary yet - generate one above.</div>
+          )}
+          {itinerary.length > 0 && (
+            <div className="download-actions">
+              <button onClick={handleDownloadItinerary} className="btn-primary">
+                Download Offline Plan
+              </button>
+              <button onClick={handlePrintItinerary} className="btn-secondary">
+                Print / Save PDF
+              </button>
+            </div>
           )}
           {itinerary.map((day, i) => (
   <div key={i} className="it-day">
@@ -297,7 +425,7 @@ export default function TripPlanner() {
     <ul>
       {day.items.map((it, j) => (
         <li key={j}>
-          {it.type === "event" ? "🎉 " : "🧘 "}
+          {it.type === "event" ? "Event: " : "Suggested: "}
           {it.title}
         </li>
       ))}
@@ -311,9 +439,9 @@ export default function TripPlanner() {
           )}
 {accommodations.map((a) => (
   <div key={a._id} className="acc-row">
-    <strong>{a.name}</strong> — {a.type} — {a.priceRange}
+    <strong>{a.name}</strong> - {a.type} - {a.priceRange}
     <div className="muted">
-      {a.address} {a.phone ? `• ${a.phone}` : ""}
+      {a.address} {a.phone ? `| ${a.phone}` : ""}
     </div>
   </div>
 ))}
